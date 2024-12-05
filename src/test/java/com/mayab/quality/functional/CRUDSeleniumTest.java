@@ -170,7 +170,7 @@ public class CRUDSeleniumTest {
     }
 
     @AfterAll
-    public void tearDown() {
+    public static void tearDown() {
         deleteUser();
         driver.quit();
     }
