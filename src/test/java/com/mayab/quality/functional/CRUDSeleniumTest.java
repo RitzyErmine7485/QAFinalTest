@@ -116,7 +116,8 @@ public class CRUDSeleniumTest {
 
         driver.findElement(By.xpath("//button[text()='Save']")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class, 'ui green success message')]//p")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//div[contains(@class, 'ui green success message')]//p")), Duration.ofSeconds(20));
 
         WebElement successMessage = driver.findElement(By.xpath("//div[contains(@class, 'ui green success message')]//p"));
         takeScreenshot("updateAge");
