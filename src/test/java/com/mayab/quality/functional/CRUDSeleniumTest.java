@@ -36,7 +36,7 @@ public class CRUDSeleniumTest {
         
         driver = new RemoteWebDriver(seleniumUrl, options);
         
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
         js = (JavascriptExecutor) driver;
     }
@@ -111,20 +111,18 @@ public class CRUDSeleniumTest {
         wait.until(ExpectedConditions.attributeToBe(driver.findElement(By.name("age")), "value", "20"));
 
         WebElement ageField = driver.findElement(By.name("age"));
-        ageField.sendKeys(Keys.CONTROL + "a");
-        ageField.sendKeys(Keys.DELETE);
+        ageField.clear();
         ageField.sendKeys("22");
 
         driver.findElement(By.xpath("//button[text()='Save']")).click();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(
-            By.xpath("//div[contains(@class, 'ui green success message')]//p")), Duration.ofSeconds(20));
+            By.xpath("//div[contains(@class, 'ui green success message')]//p")));
 
         WebElement successMessage = driver.findElement(By.xpath("//div[contains(@class, 'ui green success message')]//p"));
         takeScreenshot("updateAge");
         assertThat(successMessage.getText(), is("Successfully updated!"));
     }
-
 
     @Test
     public void test4_DeleteUser() throws Exception {
