@@ -166,12 +166,13 @@ public class CRUDSeleniumTest {
 
         WebElement table = driver.findElement(By.xpath("//table[@class='ui single line table']"));
         takeScreenshot("findAll");
+        deleteUser();
+        
         assertThat(table.isDisplayed(), is(true));
     }
 
-    @AfterAll
-    public static void tearDown() {
-        deleteUser();
+    @AfterEach
+    public void tearDown() {
         driver.quit();
     }
 }
