@@ -1,0 +1,57 @@
+version: 2.1
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/openjdk:11.0
+      - image: mysql:5.7
+        environment:
+          MYSQL_ROOT_PASSWORD: 123456
+          MYSQL_DATABASE: Quality
+      - image: selenium/standalone-chrome:latest
+
+    steps:
+      - checkout
+
+      - run: mkdir test-reports
+
+      - run:
+          name: Install MySQL Client
+          command: sudo apt-get update && sudo apt-get install -y mysql-client
+
+      - run:
+          name: Wait for MySQL
+          command: |
+            until mysql -h 127.0.0.1 -u root -p123456 -e "SHOW DATABASES;"; do
+              echo "Waiting for MySQL to be ready..."
+              sleep 5
+            done
+
+      - run:
+          name: Create database schema
+          command: |
+            mysql -h 127.0.0.1 -u root -p123456 Quality < src/resources/schema.sql
+
+      - run:
+          name: Build without tests
+          command: mvn -B -DskipTests clean package
+
+      - run:
+          name: Run Tests
+          command: mvn test
+
+      - store_test_results:
+          path: target/surefire-reports
+      - store_artifacts:
+          path: target
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: maven-repo-{{ checksum "pom.xml" }}
+
+workflows:
+  version: 2
+  sample:
+    jobs:
+      - build-and-test
