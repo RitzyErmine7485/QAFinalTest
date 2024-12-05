@@ -169,8 +169,9 @@ public class CRUDSeleniumTest {
         assertThat(table.isDisplayed(), is(true));
     }
 
-    @AfterEach
+    @AfterAll
     public void tearDown() {
+        deleteUser();
         driver.quit();
     }
 }
