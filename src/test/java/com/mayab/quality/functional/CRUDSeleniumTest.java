@@ -111,7 +111,8 @@ public class CRUDSeleniumTest {
         wait.until(ExpectedConditions.attributeToBe(driver.findElement(By.name("age")), "value", "20"));
 
         WebElement ageField = driver.findElement(By.name("age"));
-        ageField.clear();
+        ageField.sendKeys(Keys.CONTROL + "a");
+        ageField.sendKeys(Keys.DELETE);
         ageField.sendKeys("22");
 
         driver.findElement(By.xpath("//button[text()='Save']")).click();
@@ -123,6 +124,7 @@ public class CRUDSeleniumTest {
         takeScreenshot("updateAge");
         assertThat(successMessage.getText(), is("Successfully updated!"));
     }
+
 
     @Test
     public void test4_DeleteUser() throws Exception {
