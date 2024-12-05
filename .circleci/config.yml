@@ -52,6 +52,6 @@ jobs:
 
 workflows:
   version: 2
-  sample:
+  final:
     jobs:
       - build-and-test
